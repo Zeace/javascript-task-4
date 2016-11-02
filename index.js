@@ -85,16 +85,14 @@ var bestFriends = lego.query(
     lego.limit(4)
 );
 
-console.info(bestFriends);
-
-/* Выведет:
-[
-    { name: 'Стелла', gender: 'Ж', email: 'waltersguzman@example.com' },
-    { name: 'Мэт', gender: 'М', email: 'danamcgee@example.com' },
-    { name: 'Шерри', gender: 'Ж', email: 'danamcgee@example.com' },
-    { name: 'Сэм', gender: 'М', email: 'luisazamora@example.com' }
-]
-*/
+ /* Выведет:
+ [
+ { name: 'Стелла', gender: 'Ж', email: 'waltersguzman@example.com' },
+ { name: 'Мэт', gender: 'М', email: 'danamcgee@example.com' },
+ { name: 'Шерри', gender: 'Ж', email: 'danamcgee@example.com' },
+ { name: 'Сэм', gender: 'М', email: 'luisazamora@example.com' }
+ ]
+ */
 
 if (lego.isStar) {
     // Билли был бы по-настоящему счастлив, если бы ему удалось провести сразу две вечеринки:
@@ -123,11 +121,11 @@ if (lego.isStar) {
 
     /* Выведет
      [
-         { name: 'Сэм' },
-         { name: 'Эмили' },
-         { name: 'Мэт' },
-         { name: 'Шерри' },
-         { name: 'Стелла' }
+     { name: 'Сэм' },
+     { name: 'Эмили' },
+     { name: 'Мэт' },
+     { name: 'Шерри' },
+     { name: 'Стелла' }
      ]
      */
 }

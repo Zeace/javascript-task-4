@@ -8,16 +8,16 @@ exports.isStar = true;
 
 
 exports.query = function (collection) {
-    var copy = collection.map(function (entry) {
+    var copyOfCollection = collection.map(function (entry) {
         return Object.assign({}, entry);
     });
     var operators = [].slice.call(arguments, 1);
     operators.sort(sortByPriority);
-    for (var i = 0; i < operators.length; i++) {
-        copy = operators[i](copy);
-    }
+    copyOfCollection = operators.reduce(function (collect, opepator) {
+        return opepator(collect);
+    }, copyOfCollection);
 
-    return copy;
+    return copyOfCollection;
 };
 
 function sortByPriority(a, b) {
@@ -31,10 +31,9 @@ exports.select = function () {
     var params = [].slice.call(arguments);
 
     return function select(collection) {
-        var copy = collection.slice();
+        var copyOfCollection = collection.slice();
 
-        return copy.map(function (entry) {
-
+        return copyOfCollection.map(function (entry) {
             return selectByParam(params, entry);
         });
     };
@@ -56,34 +55,25 @@ exports.filterIn = function (property, values) {
     console.info(property, values);
 
     return function filterIn(collection) {
-        var copy = collection.slice();
+        var copyOfCollection = collection.slice();
 
-        return copy.filter(function (entry) {
-
-            return checkPropAndValues(entry, property, values);
+        return copyOfCollection.filter(function (entry) {
+            return values.some(function (value) {
+                return entry[property] === value;
+            });
         });
     };
 };
 
-function checkPropAndValues(entry, property, values) {
-    for (var i = 0; i < values.length; i++) {
-        if (entry[property] === values[i]) {
-            return true;
-        }
-    }
-
-    return false;
-}
 
 exports.sortBy = function (property, order) {
     console.info(property, order);
 
     return function sortBy(collection) {
-        var copy = collection.slice();
+        var copyOfCollection = collection.slice();
 
-        return copy.sort(function (entryOne, entryTwo) {
+        return copyOfCollection.sort(function (entryOne, entryTwo) {
             if (order === 'asc') {
-
                 return entryOne[property] > entryTwo[property];
             }
 
@@ -96,9 +86,9 @@ exports.format = function (property, formatter) {
     console.info(property, formatter);
 
     return function format(collection) {
-        var copy = collection.slice();
+        var copyOfCollection = collection.slice();
 
-        return copy.map(function (entry) {
+        return copyOfCollection.map(function (entry) {
             entry[property] = formatter(entry[property]);
 
             return entry;
@@ -110,7 +100,6 @@ exports.limit = function (count) {
     console.info(count);
 
     return function limit(collection) {
-
         return collection.slice(0, count);
     };
 };
@@ -121,11 +110,11 @@ if (exports.isStar) {
         var filters = [].slice.call(arguments);
 
         return function or(collection) {
-            var copy = collection.slice();
+            var copyOfCollection = collection.slice();
 
-            return copy.filter(function (item) {
+            return copyOfCollection.filter(function (item) {
                 return filters.some(function (filter) {
-                    return filter(copy).indexOf(item) !== -1;
+                    return filter(copyOfCollection).indexOf(item) !== -1;
                 });
             });
         };
@@ -135,12 +124,12 @@ if (exports.isStar) {
         var filters = [].slice.call(arguments);
 
         return function and(collection) {
-            var copy = collection.slice();
+            var copyOfCollection = collection.slice();
             filters.forEach(function (filter) {
-                copy = filter(copy);
+                copyOfCollection = filter(copyOfCollection);
             });
 
-            return copy;
+            return copyOfCollection;
         };
     };
 }
