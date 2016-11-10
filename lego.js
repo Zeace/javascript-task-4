@@ -40,12 +40,9 @@ exports.select = function () {
 };
 
 function selectByParam(params, entry) {
-    var keys = Object.keys(entry);
     var newEntry = {};
-    keys.forEach(function (key) {
-        if (params.indexOf(key) !== -1) {
-            newEntry[key] = entry[key];
-        }
+    params.forEach(function (param) {
+        newEntry[param] = entry[param];
     });
 
     return newEntry;
