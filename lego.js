@@ -52,9 +52,7 @@ exports.filterIn = function (property, values) {
     console.info(property, values);
 
     return function filterIn(collection) {
-        var copyOfCollection = collection.slice();
-
-        return copyOfCollection.filter(function (entry) {
+        return collection.slice().filter(function (entry) {
             return values.some(function (value) {
                 return entry[property] === value;
             });
@@ -67,9 +65,7 @@ exports.sortBy = function (property, order) {
     console.info(property, order);
 
     return function sortBy(collection) {
-        var copyOfCollection = collection.slice();
-
-        return copyOfCollection.sort(function (entryOne, entryTwo) {
+        return collection.slice().sort(function (entryOne, entryTwo) {
             if (order === 'asc') {
                 return entryOne[property] > entryTwo[property];
             }
@@ -105,11 +101,9 @@ if (exports.isStar) {
         var filters = [].slice.call(arguments);
 
         return function or(collection) {
-            var copyOfCollection = collection.slice();
-
-            return copyOfCollection.filter(function (item) {
+            return collection.slice().filter(function (item) {
                 return filters.some(function (filter) {
-                    return filter(copyOfCollection).indexOf(item) !== -1;
+                    return filter(collection.slice()).indexOf(item) !== -1;
                 });
             });
         };
