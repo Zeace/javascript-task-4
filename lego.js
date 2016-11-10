@@ -31,9 +31,7 @@ exports.select = function () {
     var params = [].slice.call(arguments);
 
     return function select(collection) {
-        var copyOfCollection = collection.slice();
-
-        return copyOfCollection.map(function (entry) {
+        return collection.slice().map(function (entry) {
             return selectByParam(params, entry);
         });
     };
@@ -85,9 +83,7 @@ exports.format = function (property, formatter) {
     console.info(property, formatter);
 
     return function format(collection) {
-        var copyOfCollection = collection.slice();
-
-        return copyOfCollection.map(function (entry) {
+        return collection.slice().map(function (entry) {
             entry[property] = formatter(entry[property]);
 
             return entry;
