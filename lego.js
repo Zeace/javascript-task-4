@@ -42,7 +42,9 @@ exports.select = function () {
 function selectByParam(params, entry) {
     var newEntry = {};
     params.forEach(function (param) {
-        newEntry[param] = entry[param];
+        if (entry[param]) {
+            newEntry[param] = entry[param];
+        }
     });
 
     return newEntry;
